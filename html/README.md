@@ -5,7 +5,7 @@ Il sistema si aspetta un dataframe in cui sono presenti i campioni sulle righe e
 
 Il datagrame e' quindi fatto in questo modo:
 
-![immagine del dataframe](/home/riccardo/sw2/Stabili/lib/RetiNeurali/frmwrkSimpleExp/Training/html/dataframe.png  "dataframe")
+![immagine del dataframe](../html/dataframe.png  "dataframe")
 
 La creazione del dataframe si puo' vedere nel notebook [preprocessing dei dati](/home/riccardo/sw2/Stabili/lib/RetiNeurali/frmwrkSimpleExp/Training/html/Preprocessing dati.html) . Un altro esempio e' dato dal preprocessine dei dati di un sottoinsieme di MNIST in [questo file](/home/riccardo/sw2/Stabili/lib/RetiNeurali/frmwrkSimpleExp/Training/html/Pre processing dati MNIST semplificato.html)
 

@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>run_kfold_2_0 API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>run_kfold_2_0</code> module</h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">import local_lib as ll
+import vis_modello as vs
+
+import numpy as np
+import sklearn
+
+import yaml
+
+# import h5py
+
+from importlib import import_module
+
+import time
+import keras
+
+import os
+
+
+
+#---------------------------------------------------------
+def dynamic_import(abs_module_path, modulo):
+    &#34;&#34;&#34;Import dinamico del modulo
+
+    Args:
+        abs_module_path: path assoluto del modulo
+        modulo: stringa del nome del modulo da importare
+
+    Returns:
+        nome del modulo da importare
+    &#34;&#34;&#34;
+    module_object = import_module(abs_module_path)
+
+    out = getattr(module_object, modulo)
+
+    return out
+
+
+#...............................................................................
+def test(df, fold, filePar):
+    &#34;&#34;&#34;Fa girare tutti i fold
+
+    La funzione esegue tutti i fold usando i dati nel dataframe df
+    e consegna i risultati di accuracy, precsion e recall medi.
+
+    Il modello della rete e&#39; letto dal file indicato nel file parametri
+    e viene reinizializzato ogni volta. La rete che raggiunge il miglior
+    risultato e&#39; memorizzata in un file .h5
+
+    Il parametri fold deve contenere la lista delle liste delle righe usate
+    per ogni fold. I risultati ottenuti per ogni fold sono memorizzati
+    in un file *_risultati.yaml
+
+    Args:
+        df: dataframe da fornire per il test
+        fold: lista di liste di righe del dataframe
+            (le singole liste costituiscono un fold)
+    Returns:
+        M_acc: accuracy media nei vari fold
+        M_prec: precision media nei vari fold
+        M_rec: recall media nei vari fold
+    &#34;&#34;&#34;
+
+    acc=[]
+    prec=[]
+    rec=[]
+
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+        # carico le classi
+        l_classi = cfg[&#34;parEsp&#34;][&#34;l_classi&#34;]
+
+        nDirOut = cfg[&#34;file&#34;][&#34;outputDir&#34;]
+
+    acc_BEST = 0.0
+    fold_BEST = -1
+    for i in range(len(fold)):
+
+        # esegue il training della rete
+        y_pred , Y_test, y_out, runtime, rete = run_fold(df, fold, filePar, i)
+
+
+        # controlla le prestazioni della rete nel fold i
+        acc_fold = sklearn.metrics.accuracy_score(Y_test, y_pred, normalize=True,  sample_weight=None)
+        prec_fold = sklearn.metrics.precision_score(Y_test, y_pred, average=&#34;micro&#34;)
+        rec_fold = sklearn.metrics.recall_score(Y_test, y_pred, average=&#34;micro&#34;)
+        confusion_fold = sklearn.metrics.confusion_matrix(Y_test, y_pred, labels = l_classi)
+
+        # se le prestazioni sono migliori di quelle precedenti salva il modello
+        # in memoria
+        if acc_fold &gt; acc_BEST :
+            acc_BEST = acc_fold
+            rete_BEST = rete
+            fold_BEST = i
+
+
+        # salva le prestazioni nella lista
+        acc.append(acc_fold)
+        prec.append(prec_fold)
+        rec.append(rec_fold)
+
+        # Scrive i primi dati dell&#39;esperimento in un file
+        nFOut = ll.nomeFileOut(filePar)
+        nFilePre = os.path.join(nDirOut, nFOut)
+
+        sep = &#34; :\n&#34;
+        with open(nFilePre + &#34;_risultati.yaml&#34;, &#34;a&#34;) as f:
+            f.write(&#34;fold&#34;+sep + str(i) + &#34;\n&#34;)
+            f.write(&#34;lista_pat&#34;+sep + np.array2string(fold[i][&#34;test&#34;]) +&#34;\n&#34;)
+            f.write(&#34;predizioni&#34;+sep + np.array2string(np.array(y_pred)) +&#34;\n&#34;)
+            f.write(&#34;valore_vero&#34;+sep + np.array2string(np.array(Y_test)) +&#34;\n&#34;)
+            f.write(&#34;vettore_output&#34;+sep + np.array2string(np.array(y_out)) +&#34;\n&#34;)
+            f.write(&#34;runtime&#34;+sep + str(runtime) +&#34;\n&#34;)
+            #
+            f.write(&#34;acc_fold&#34;+sep + str(acc_fold) +&#34;\n&#34;)
+            f.write(&#34;prec_fold&#34;+sep + str(prec_fold) +&#34;\n&#34;)
+            f.write(&#34;rec_fold&#34;+sep + str(rec_fold) +&#34;\n&#34;)
+            f.write(&#34;confusion&#34;+sep + np.array2string(confusion_fold) +&#34;\n&#34;)
+            f.write(&#34;#\n#\n&#34;)
+
+    # calcola la media delle prestazioni
+    M_acc=np.average(acc)
+    M_prec=np.average(prec)
+    M_rec=np.average(rec)
+
+    nFOut = ll.nomeFileOut(filePar) + &#34;_network_fold_&#34; + str(fold_BEST)+ &#34;.h5&#34;
+    nFileNet = os.path.join(nDirOut, nFOut)
+    rete_BEST.save(nFileNet)
+
+    nFOut = ll.nomeFileOut(filePar) + &#34;_arch_net&#34; + str(fold_BEST)
+    nFileNet = os.path.join(nDirOut, nFOut)
+    #vs.main(nFileNet, rete_BEST)
+
+
+    return M_acc, M_prec, M_rec
+
+
+
+#...............................................................................
+def run_fold(df, fold, filePar, i):
+    &#34;&#34;&#34;Esegue il run del fold i dell&#39;esperimento.
+
+    Dal filePar si leggono i parametri della rete neurale.
+    Dal fold sono separati i dati di training ed i dati di test, si esegue il training
+    e si esegue il test, Le previsioni sono portate in output. Il calcolo
+    dei risultati dell&#39;apprendimento e&#39; fatto nel programma chiamante.
+
+    Args:
+        df: dataframe contenente tutti i dati
+        fold: lista di liste di righe del dataframe (le singole liste costituiscono un fold)
+        filePar: nome del file di parametri della rete neurale
+        i: numero del fold da fare girare
+
+    Returns:
+        y_pred: lista di valori corrispondenti alle risposte della rete
+        Y_test: lista di valor di riferimento, contenuti del dataframe df
+        y_out: array corrispondente ai valori delle uscite della
+                rete per ogni pattern di ingresso
+        runtime: tempo in secondi impiegato per il training della rete
+
+    &#34;&#34;&#34;
+
+    import sys
+
+
+    # legge dal file di parametri il nome del file con la rete
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+        # carico le classi
+        l_classi = cfg[&#34;parEsp&#34;][&#34;l_classi&#34;]
+
+        # # CARICO I PARAMETRI DELLA RETE
+        input_shape = cfg[&#34;parAlg&#34;][&#34;input_shape&#34;]
+
+        num_output = cfg[&#34;parAlg&#34;][&#34;dl2_units_num&#34;]
+
+
+        validation_split = cfg[&#34;parAlg&#34;][&#34;validation_split&#34;]
+        # learning_rate = cfg[&#34;parAlg&#34;][&#34;learning_rate&#34;]
+        batch_size = cfg[&#34;parAlg&#34;][&#34;batch_size&#34;]
+        epochs = cfg[&#34;parAlg&#34;][&#34;epochs&#34;]
+        norma = cfg[&#34;parAlg&#34;][&#34;norma&#34;]
+
+        pathNetwork =  cfg[&#34;Alg&#34;][&#34;path&#34;]
+        sys.path.append( pathNetwork)
+
+        nomeFileNetwork = cfg[&#34;Alg&#34;][&#34;file&#34;]
+
+    # importa la libreria delle reti neurali
+    riga = &#34;import &#34; + nomeFileNetwork + &#34; as NN&#34;
+    exec(riga)  # importa il file con la rete
+
+    # faccio l&#39;import dinamico della funzione che contiene la rete neurale
+    rete_neurale = dynamic_import(nomeFileNetwork, &#34;Net_f&#34;)
+
+
+    l_features, l_output, _, _, _ =ll.leggeParametri(filePar)
+
+    # seleziona i dati di ingresso e di uscita
+    X_train, Y_train = ll.estraiDati(fold[i][&#34;train&#34;], df, l_features, l_output, norma)
+    X_test, Y_test = ll.estraiDati(fold[i][&#34;test&#34;], df, l_features, l_output, norma)
+
+
+    # model = NN.Net_f(filePar)
+    model = rete_neurale(filePar)
+
+    ### TEMPO DI ADDESTRAMENTO &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    start_time = time.time()
+
+
+    # esegue il training
+    X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1] ) )
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y = np.reshape(Y_train, (len(Y_train) ,) )
+    # trasforma il numero della classe (classeID) in categoria
+    Y = keras.utils.to_categorical(Y, num_output)
+
+
+    model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =0)
+    # &#34;TEMPO DI ADDESTRAMENTO &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#34;
+    runtime = (time.time() - start_time)
+
+    # PREDIZIONI =============================================================
+    # genera l&#39;output del modello
+    X = np.reshape(X_test, (len(X_test), input_shape[0], input_shape[1] ) )
+    y_out = model.predict(X)
+
+    y_pred = [ np.argmax(x) for x in y_out ]
+    y_pred = [l_classi[i] for i in y_pred]
+    # confronto con la soglia
+    #y_pred = y_out &gt; dl2_soglia
+    #y_pred.astype(np.int)
+    # =======================================================================
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y_test = list( np.reshape(Y_test, [len(Y_test), ]) )
+    Y_test = [l_classi[int(i)] for i in Y_test]
+    # trasforma il numero della classe (classeID) in categoria
+    #Y_test = keras.utils.to_categorical(Y_test, dl2_units_num)
+
+    #y_pred = np.reshape(y_pred, [len(y_pred), ])
+
+    #print &#34;y_pred&#34;, y_pred
+    #print &#34;Y_test&#34;, Y_test
+    #print &#34;y_out&#34;, y_out
+
+    return y_pred, Y_test, y_out, runtime, model</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="run_kfold_2_0.dynamic_import"><code class="name flex">
+<span>def <span class="ident">dynamic_import</span></span>(<span>abs_module_path, modulo)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Import dinamico del modulo</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>abs_module_path</code></strong></dt>
+<dd>path assoluto del modulo</dd>
+<dt><strong><code>modulo</code></strong></dt>
+<dd>stringa del nome del modulo da importare</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>nome del modulo da importare</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def dynamic_import(abs_module_path, modulo):
+    &#34;&#34;&#34;Import dinamico del modulo
+
+    Args:
+        abs_module_path: path assoluto del modulo
+        modulo: stringa del nome del modulo da importare
+
+    Returns:
+        nome del modulo da importare
+    &#34;&#34;&#34;
+    module_object = import_module(abs_module_path)
+
+    out = getattr(module_object, modulo)
+
+    return out</code></pre>
+</details>
+</dd>
+<dt id="run_kfold_2_0.run_fold"><code class="name flex">
+<span>def <span class="ident">run_fold</span></span>(<span>df, fold, filePar, i)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Esegue il run del fold i dell'esperimento.</p>
+<p>Dal filePar si leggono i parametri della rete neurale.
+Dal fold sono separati i dati di training ed i dati di test, si esegue il training
+e si esegue il test, Le previsioni sono portate in output. Il calcolo
+dei risultati dell'apprendimento e' fatto nel programma chiamante.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>df</code></strong></dt>
+<dd>dataframe contenente tutti i dati</dd>
+<dt><strong><code>fold</code></strong></dt>
+<dd>lista di liste di righe del dataframe (le singole liste costituiscono un fold)</dd>
+<dt><strong><code>filePar</code></strong></dt>
+<dd>nome del file di parametri della rete neurale</dd>
+<dt><strong><code>i</code></strong></dt>
+<dd>numero del fold da fare girare</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>y_pred</code></strong></dt>
+<dd>lista di valori corrispondenti alle risposte della rete</dd>
+<dt><strong><code>Y_test</code></strong></dt>
+<dd>lista di valor di riferimento, contenuti del dataframe df</dd>
+<dt><strong><code>y_out</code></strong></dt>
+<dd>array corrispondente ai valori delle uscite della
+rete per ogni pattern di ingresso</dd>
+<dt><strong><code>runtime</code></strong></dt>
+<dd>tempo in secondi impiegato per il training della rete</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def run_fold(df, fold, filePar, i):
+    &#34;&#34;&#34;Esegue il run del fold i dell&#39;esperimento.
+
+    Dal filePar si leggono i parametri della rete neurale.
+    Dal fold sono separati i dati di training ed i dati di test, si esegue il training
+    e si esegue il test, Le previsioni sono portate in output. Il calcolo
+    dei risultati dell&#39;apprendimento e&#39; fatto nel programma chiamante.
+
+    Args:
+        df: dataframe contenente tutti i dati
+        fold: lista di liste di righe del dataframe (le singole liste costituiscono un fold)
+        filePar: nome del file di parametri della rete neurale
+        i: numero del fold da fare girare
+
+    Returns:
+        y_pred: lista di valori corrispondenti alle risposte della rete
+        Y_test: lista di valor di riferimento, contenuti del dataframe df
+        y_out: array corrispondente ai valori delle uscite della
+                rete per ogni pattern di ingresso
+        runtime: tempo in secondi impiegato per il training della rete
+
+    &#34;&#34;&#34;
+
+    import sys
+
+
+    # legge dal file di parametri il nome del file con la rete
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+        # carico le classi
+        l_classi = cfg[&#34;parEsp&#34;][&#34;l_classi&#34;]
+
+        # # CARICO I PARAMETRI DELLA RETE
+        input_shape = cfg[&#34;parAlg&#34;][&#34;input_shape&#34;]
+
+        num_output = cfg[&#34;parAlg&#34;][&#34;dl2_units_num&#34;]
+
+
+        validation_split = cfg[&#34;parAlg&#34;][&#34;validation_split&#34;]
+        # learning_rate = cfg[&#34;parAlg&#34;][&#34;learning_rate&#34;]
+        batch_size = cfg[&#34;parAlg&#34;][&#34;batch_size&#34;]
+        epochs = cfg[&#34;parAlg&#34;][&#34;epochs&#34;]
+        norma = cfg[&#34;parAlg&#34;][&#34;norma&#34;]
+
+        pathNetwork =  cfg[&#34;Alg&#34;][&#34;path&#34;]
+        sys.path.append( pathNetwork)
+
+        nomeFileNetwork = cfg[&#34;Alg&#34;][&#34;file&#34;]
+
+    # importa la libreria delle reti neurali
+    riga = &#34;import &#34; + nomeFileNetwork + &#34; as NN&#34;
+    exec(riga)  # importa il file con la rete
+
+    # faccio l&#39;import dinamico della funzione che contiene la rete neurale
+    rete_neurale = dynamic_import(nomeFileNetwork, &#34;Net_f&#34;)
+
+
+    l_features, l_output, _, _, _ =ll.leggeParametri(filePar)
+
+    # seleziona i dati di ingresso e di uscita
+    X_train, Y_train = ll.estraiDati(fold[i][&#34;train&#34;], df, l_features, l_output, norma)
+    X_test, Y_test = ll.estraiDati(fold[i][&#34;test&#34;], df, l_features, l_output, norma)
+
+
+    # model = NN.Net_f(filePar)
+    model = rete_neurale(filePar)
+
+    ### TEMPO DI ADDESTRAMENTO &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    start_time = time.time()
+
+
+    # esegue il training
+    X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1] ) )
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y = np.reshape(Y_train, (len(Y_train) ,) )
+    # trasforma il numero della classe (classeID) in categoria
+    Y = keras.utils.to_categorical(Y, num_output)
+
+
+    model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =0)
+    # &#34;TEMPO DI ADDESTRAMENTO &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&#34;
+    runtime = (time.time() - start_time)
+
+    # PREDIZIONI =============================================================
+    # genera l&#39;output del modello
+    X = np.reshape(X_test, (len(X_test), input_shape[0], input_shape[1] ) )
+    y_out = model.predict(X)
+
+    y_pred = [ np.argmax(x) for x in y_out ]
+    y_pred = [l_classi[i] for i in y_pred]
+    # confronto con la soglia
+    #y_pred = y_out &gt; dl2_soglia
+    #y_pred.astype(np.int)
+    # =======================================================================
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y_test = list( np.reshape(Y_test, [len(Y_test), ]) )
+    Y_test = [l_classi[int(i)] for i in Y_test]
+    # trasforma il numero della classe (classeID) in categoria
+    #Y_test = keras.utils.to_categorical(Y_test, dl2_units_num)
+
+    #y_pred = np.reshape(y_pred, [len(y_pred), ])
+
+    #print &#34;y_pred&#34;, y_pred
+    #print &#34;Y_test&#34;, Y_test
+    #print &#34;y_out&#34;, y_out
+
+    return y_pred, Y_test, y_out, runtime, model</code></pre>
+</details>
+</dd>
+<dt id="run_kfold_2_0.test"><code class="name flex">
+<span>def <span class="ident">test</span></span>(<span>df, fold, filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fa girare tutti i fold</p>
+<p>La funzione esegue tutti i fold usando i dati nel dataframe df
+e consegna i risultati di accuracy, precsion e recall medi.</p>
+<p>Il modello della rete e' letto dal file indicato nel file parametri
+e viene reinizializzato ogni volta. La rete che raggiunge il miglior
+risultato e' memorizzata in un file .h5</p>
+<p>Il parametri fold deve contenere la lista delle liste delle righe usate
+per ogni fold. I risultati ottenuti per ogni fold sono memorizzati
+in un file *_risultati.yaml</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>df</code></strong></dt>
+<dd>dataframe da fornire per il test</dd>
+<dt><strong><code>fold</code></strong></dt>
+<dd>lista di liste di righe del dataframe
+(le singole liste costituiscono un fold)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>M_acc</code></strong></dt>
+<dd>accuracy media nei vari fold</dd>
+<dt><strong><code>M_prec</code></strong></dt>
+<dd>precision media nei vari fold</dd>
+<dt><strong><code>M_rec</code></strong></dt>
+<dd>recall media nei vari fold</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def test(df, fold, filePar):
+    &#34;&#34;&#34;Fa girare tutti i fold
+
+    La funzione esegue tutti i fold usando i dati nel dataframe df
+    e consegna i risultati di accuracy, precsion e recall medi.
+
+    Il modello della rete e&#39; letto dal file indicato nel file parametri
+    e viene reinizializzato ogni volta. La rete che raggiunge il miglior
+    risultato e&#39; memorizzata in un file .h5
+
+    Il parametri fold deve contenere la lista delle liste delle righe usate
+    per ogni fold. I risultati ottenuti per ogni fold sono memorizzati
+    in un file *_risultati.yaml
+
+    Args:
+        df: dataframe da fornire per il test
+        fold: lista di liste di righe del dataframe
+            (le singole liste costituiscono un fold)
+    Returns:
+        M_acc: accuracy media nei vari fold
+        M_prec: precision media nei vari fold
+        M_rec: recall media nei vari fold
+    &#34;&#34;&#34;
+
+    acc=[]
+    prec=[]
+    rec=[]
+
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+        # carico le classi
+        l_classi = cfg[&#34;parEsp&#34;][&#34;l_classi&#34;]
+
+        nDirOut = cfg[&#34;file&#34;][&#34;outputDir&#34;]
+
+    acc_BEST = 0.0
+    fold_BEST = -1
+    for i in range(len(fold)):
+
+        # esegue il training della rete
+        y_pred , Y_test, y_out, runtime, rete = run_fold(df, fold, filePar, i)
+
+
+        # controlla le prestazioni della rete nel fold i
+        acc_fold = sklearn.metrics.accuracy_score(Y_test, y_pred, normalize=True,  sample_weight=None)
+        prec_fold = sklearn.metrics.precision_score(Y_test, y_pred, average=&#34;micro&#34;)
+        rec_fold = sklearn.metrics.recall_score(Y_test, y_pred, average=&#34;micro&#34;)
+        confusion_fold = sklearn.metrics.confusion_matrix(Y_test, y_pred, labels = l_classi)
+
+        # se le prestazioni sono migliori di quelle precedenti salva il modello
+        # in memoria
+        if acc_fold &gt; acc_BEST :
+            acc_BEST = acc_fold
+            rete_BEST = rete
+            fold_BEST = i
+
+
+        # salva le prestazioni nella lista
+        acc.append(acc_fold)
+        prec.append(prec_fold)
+        rec.append(rec_fold)
+
+        # Scrive i primi dati dell&#39;esperimento in un file
+        nFOut = ll.nomeFileOut(filePar)
+        nFilePre = os.path.join(nDirOut, nFOut)
+
+        sep = &#34; :\n&#34;
+        with open(nFilePre + &#34;_risultati.yaml&#34;, &#34;a&#34;) as f:
+            f.write(&#34;fold&#34;+sep + str(i) + &#34;\n&#34;)
+            f.write(&#34;lista_pat&#34;+sep + np.array2string(fold[i][&#34;test&#34;]) +&#34;\n&#34;)
+            f.write(&#34;predizioni&#34;+sep + np.array2string(np.array(y_pred)) +&#34;\n&#34;)
+            f.write(&#34;valore_vero&#34;+sep + np.array2string(np.array(Y_test)) +&#34;\n&#34;)
+            f.write(&#34;vettore_output&#34;+sep + np.array2string(np.array(y_out)) +&#34;\n&#34;)
+            f.write(&#34;runtime&#34;+sep + str(runtime) +&#34;\n&#34;)
+            #
+            f.write(&#34;acc_fold&#34;+sep + str(acc_fold) +&#34;\n&#34;)
+            f.write(&#34;prec_fold&#34;+sep + str(prec_fold) +&#34;\n&#34;)
+            f.write(&#34;rec_fold&#34;+sep + str(rec_fold) +&#34;\n&#34;)
+            f.write(&#34;confusion&#34;+sep + np.array2string(confusion_fold) +&#34;\n&#34;)
+            f.write(&#34;#\n#\n&#34;)
+
+    # calcola la media delle prestazioni
+    M_acc=np.average(acc)
+    M_prec=np.average(prec)
+    M_rec=np.average(rec)
+
+    nFOut = ll.nomeFileOut(filePar) + &#34;_network_fold_&#34; + str(fold_BEST)+ &#34;.h5&#34;
+    nFileNet = os.path.join(nDirOut, nFOut)
+    rete_BEST.save(nFileNet)
+
+    nFOut = ll.nomeFileOut(filePar) + &#34;_arch_net&#34; + str(fold_BEST)
+    nFileNet = os.path.join(nDirOut, nFOut)
+    #vs.main(nFileNet, rete_BEST)
+
+
+    return M_acc, M_prec, M_rec</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="run_kfold_2_0.dynamic_import" href="#run_kfold_2_0.dynamic_import">dynamic_import</a></code></li>
+<li><code><a title="run_kfold_2_0.run_fold" href="#run_kfold_2_0.run_fold">run_fold</a></code></li>
+<li><code><a title="run_kfold_2_0.test" href="#run_kfold_2_0.test">test</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>main_esp_2_0 API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>main_esp_2_0</code> module</h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">#
+# QUESTO FILE FA GIRARE TUTTO L&#39;ESPERIMENTO
+#
+
+
+import local_lib
+import run_kfold_2_0 as re
+
+import sys
+import os
+# import h5py
+sys.path.append(&#34;/home/riccardo/sw2/Stabili/lib/mail/&#34;)
+import send_mail as sm
+import datiEmail as dm
+
+import time
+import yaml
+
+
+def main(filePar):
+    &#34;&#34;&#34;Lancia l&#39;esperimento.
+
+    In un file ricopia il file della rete ed il file dei parametri.
+    Salva anche un grafico della rete.
+
+    Salva le prestazioni medie della rete durante i fold ed invia una mail con i
+    risultati a esperimento concluso.
+
+
+    &#34;&#34;&#34;
+    # leggo il file della rete neurale come stringa
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+        pathNetwork = cfg[&#34;Alg&#34;][&#34;path&#34;]
+
+        nomeFileNetwork = cfg[&#34;Alg&#34;][&#34;file&#34;]
+
+        nDirOut = cfg[&#34;file&#34;][&#34;outputDir&#34;]
+
+    nomeFileRete=pathNetwork + nomeFileNetwork +&#34;.py&#34;
+    print(nomeFileRete)
+    # leggo il file della rete neurale come stringa
+    fin = open(nomeFileRete, &#34;r&#34;)
+    file_rete = fin.readlines()
+    fin.close()
+
+    # leggo il file dei parametri come stringa
+    fin = open(filePar, &#34;r&#34;)
+    parametri = fin.readlines()
+    fin.close()
+
+
+    # Genera il nome del file di output
+    nFOut = local_lib.nomeFileOut(filePar)
+
+    # controlla che esista la dir, altrimenti la crea
+
+    if not os.path.exists(nDirOut):
+        os.makedirs(nDirOut)
+
+    nFilePre = os.path.join(nDirOut, nFOut)
+
+    # apre il file
+    #&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+    with open(nFilePre + &#34;_descr_rete.net&#34;, &#34;w&#34;) as f:
+        # inserisce le informazioni nel file dei risultati
+
+        #=======================================================
+        # scrive le stringhe del file della rete e dei parametri
+        f.write(&#34;File_rete\n&#34;)
+        f.write(&#34;&#34;.join(file_rete))
+
+        f.write(&#34;Parametri_passati\n&#34;)
+        f.write(&#34;&#34;.join(parametri))
+        # =======================================================
+
+    print(&#34;carica il dataset e crea la lista di indici del k-fold&#34;)
+    df, fold = local_lib.prepara_ambiente(filePar)
+
+    # esegue il test ottenendo le medie
+    # dei parametri di output
+    print(&#34;eseguo l&#39;esperimento&#34;)
+
+    ### tempo di run &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    start_time = time.time()
+
+    M_acc, M_prec, M_rec = re.test(df, fold, filePar )
+
+    ### TEMPO DI run &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    runtime = (time.time() - start_time)
+
+    # scrivere i risultati in un file
+    #nFOut = local_lib.nomeFileOut(filePar)
+
+    # apre il file
+    # &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+    with open(nFilePre + &#34;_totale_training.csv&#34;, &#34;w&#34;) as f:
+        f.write(&#34;Tempo totale di run (in sec)&#34; + &#34;,&#34;+ str(runtime) + &#34;\n&#34;)
+        f.write(&#34;Media Accuracy&#34;+ &#34;,&#34; + str(M_acc)+ &#34;\n&#34;)
+        f.write(&#34;Media Precision&#34;+&#34;,&#34;+ str(M_prec)+ &#34;\n&#34;)
+        f.write(&#34;Media Recall&#34;+&#34;,&#34;+ str(M_rec)+ &#34;\n&#34;)
+
+
+    # email risultati
+    subject = &#34;Esperimenti prova &#34; + nFilePre
+    body = &#34;finiti tutti gli esperimenti&#34; + &#34;\n&#34;
+    body +=  &#34;Accuracy media :&#34; + str( M_acc) + &#34;\n&#34;
+    body +=  &#34;Precision media:&#34; + str( M_prec) + &#34;\n&#34;
+    body +=  &#34;Recall media:&#34; + str( M_rec) + &#34;\n&#34;
+
+    sm.send_email(dm.user, dm.pwd, dm.recipient, subject, body)
+
+
+    # mandare la email
+
+if __name__==&#34;__main__&#34;:
+
+    main(sys.argv[1])</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="main_esp_2_0.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Lancia l'esperimento.</p>
+<p>In un file ricopia il file della rete ed il file dei parametri.
+Salva anche un grafico della rete.</p>
+<p>Salva le prestazioni medie della rete durante i fold ed invia una mail con i
+risultati a esperimento concluso.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def main(filePar):
+    &#34;&#34;&#34;Lancia l&#39;esperimento.
+
+    In un file ricopia il file della rete ed il file dei parametri.
+    Salva anche un grafico della rete.
+
+    Salva le prestazioni medie della rete durante i fold ed invia una mail con i
+    risultati a esperimento concluso.
+
+
+    &#34;&#34;&#34;
+    # leggo il file della rete neurale come stringa
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+        pathNetwork = cfg[&#34;Alg&#34;][&#34;path&#34;]
+
+        nomeFileNetwork = cfg[&#34;Alg&#34;][&#34;file&#34;]
+
+        nDirOut = cfg[&#34;file&#34;][&#34;outputDir&#34;]
+
+    nomeFileRete=pathNetwork + nomeFileNetwork +&#34;.py&#34;
+    print(nomeFileRete)
+    # leggo il file della rete neurale come stringa
+    fin = open(nomeFileRete, &#34;r&#34;)
+    file_rete = fin.readlines()
+    fin.close()
+
+    # leggo il file dei parametri come stringa
+    fin = open(filePar, &#34;r&#34;)
+    parametri = fin.readlines()
+    fin.close()
+
+
+    # Genera il nome del file di output
+    nFOut = local_lib.nomeFileOut(filePar)
+
+    # controlla che esista la dir, altrimenti la crea
+
+    if not os.path.exists(nDirOut):
+        os.makedirs(nDirOut)
+
+    nFilePre = os.path.join(nDirOut, nFOut)
+
+    # apre il file
+    #&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+    with open(nFilePre + &#34;_descr_rete.net&#34;, &#34;w&#34;) as f:
+        # inserisce le informazioni nel file dei risultati
+
+        #=======================================================
+        # scrive le stringhe del file della rete e dei parametri
+        f.write(&#34;File_rete\n&#34;)
+        f.write(&#34;&#34;.join(file_rete))
+
+        f.write(&#34;Parametri_passati\n&#34;)
+        f.write(&#34;&#34;.join(parametri))
+        # =======================================================
+
+    print(&#34;carica il dataset e crea la lista di indici del k-fold&#34;)
+    df, fold = local_lib.prepara_ambiente(filePar)
+
+    # esegue il test ottenendo le medie
+    # dei parametri di output
+    print(&#34;eseguo l&#39;esperimento&#34;)
+
+    ### tempo di run &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    start_time = time.time()
+
+    M_acc, M_prec, M_rec = re.test(df, fold, filePar )
+
+    ### TEMPO DI run &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    runtime = (time.time() - start_time)
+
+    # scrivere i risultati in un file
+    #nFOut = local_lib.nomeFileOut(filePar)
+
+    # apre il file
+    # &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;
+    with open(nFilePre + &#34;_totale_training.csv&#34;, &#34;w&#34;) as f:
+        f.write(&#34;Tempo totale di run (in sec)&#34; + &#34;,&#34;+ str(runtime) + &#34;\n&#34;)
+        f.write(&#34;Media Accuracy&#34;+ &#34;,&#34; + str(M_acc)+ &#34;\n&#34;)
+        f.write(&#34;Media Precision&#34;+&#34;,&#34;+ str(M_prec)+ &#34;\n&#34;)
+        f.write(&#34;Media Recall&#34;+&#34;,&#34;+ str(M_rec)+ &#34;\n&#34;)
+
+
+    # email risultati
+    subject = &#34;Esperimenti prova &#34; + nFilePre
+    body = &#34;finiti tutti gli esperimenti&#34; + &#34;\n&#34;
+    body +=  &#34;Accuracy media :&#34; + str( M_acc) + &#34;\n&#34;
+    body +=  &#34;Precision media:&#34; + str( M_prec) + &#34;\n&#34;
+    body +=  &#34;Recall media:&#34; + str( M_rec) + &#34;\n&#34;
+
+    sm.send_email(dm.user, dm.pwd, dm.recipient, subject, body)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="main_esp_2_0.main" href="#main_esp_2_0.main">main</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>local_lib API documentation</title>
+<meta name="description" content="ntroduzione …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>local_lib</code> module</h1>
+</header>
+<section id="section-intro">
+<h1 id="ntroduzione">ntroduzione</h1>
+<p>Il modulo carica un dataframe in memoria e gestisce una sessione di
+esperiemnti usando il k-fold.
+La procedura é pensata per esperimenti piccoli, in quanto tutto é fatto
+in memoria.
+Si suppone di avere un dataframe così fatto:</p>
+<pre><code>                      features
+                   -----------------
+                  |                 |
+                  |                 |
+        campioni  |                 |
+                  |                 |
+                  |                 |
+                  |                 |
+                  ------------------
+</code></pre>
+<p>Delle features una o più sono quelle di uscita</p>
+<p>La funzione dividiDataset genera una lista di liste; ogni
+elemento della lista <strong>i</strong> é una lista di indici corrisponenti agli
+elementi del fold <strong>i</strong></p>
+<p>TODO lettura dei dati dal file pandas</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+# ntroduzione
+
+Il modulo carica un dataframe in memoria e gestisce una sessione di
+esperiemnti usando il k-fold.
+La procedura é pensata per esperimenti piccoli, in quanto tutto é fatto
+in memoria.
+Si suppone di avere un dataframe così fatto:
+
+                          features
+                       -----------------
+                      |                 |
+                      |                 |
+            campioni  |                 |
+                      |                 |
+                      |                 |
+                      |                 |
+                      ------------------
+
+Delle features una o più sono quelle di uscita
+
+La funzione dividiDataset genera una lista di liste; ogni
+elemento della lista **i** é una lista di indici corrisponenti agli
+elementi del fold **i**
+
+TODO lettura dei dati dal file pandas
+
+&#34;&#34;&#34;
+
+
+from sklearn.model_selection import StratifiedKFold
+
+import numpy as np
+
+from sklearn.model_selection import train_test_split
+import sklearn
+
+import pandas
+import yaml
+
+import os
+
+
+
+
+#-------------------------------------------------------------------------------
+def leggeParametri(filePar):
+    &#34;&#34;&#34;Legge il file yaml con i parametri
+
+    Args:
+        filePar: nome del file yaml di ingresso
+    Returns:
+        l_input:   Lista delle colonne del file di dati da leggere come input
+        l_output: Nome della colonna da usare per output
+        fileDati: Nome del file di dati in input (dataframe pandas pickle)
+        fileOut: Postfisso del nome del file output
+        K: parametro del k-fold (generalmente 10)
+
+    &#34;&#34;&#34;
+    # carica i valori da passare ai programmi
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+    l_input = cfg[&#34;parEsp&#34;][&#34;l_input&#34;]
+    l_output = cfg[&#34;parEsp&#34;][&#34;l_output&#34;]
+
+
+    fileDati = cfg[&#34;file&#34;][&#34;inputFile&#34;]
+    fileOut = cfg[&#34;file&#34;][&#34;outputFile&#34;]
+
+    k = cfg[&#34;parEsp&#34;][&#34;k&#34;]
+
+    return l_input, l_output, fileDati, fileOut, k
+
+
+
+
+#...............................................................................
+def nomeFileOut(filePar):
+    &#34;&#34;&#34; Genera il nome del file di output dal file di parametri
+
+    Letto il nome del file dei parametri, il file di output
+    si ottiene concatenando il nome del file filePar con
+    quanto scritto nel file di parametri.
+
+    Args:
+        filePar: nome del file di PARAMETRI
+
+    Returns:
+        fileOut: nome del file di output
+
+    &#34;&#34;&#34;
+
+    _, _, _, fileOut, _ = leggeParametri(filePar)
+    filePar = os.path.splitext(filePar)[0]
+
+    return filePar+&#34;_&#34;+fileOut
+
+
+#-------------------------------------------------------------------------------
+def to_stringa(lista, sep = &#39;, &#39;):
+    &#34;&#34;&#34;Trasforma la lista in una stringa, separata da &#39;sep&#39;
+
+    Args:
+        lista: la lista da convertire
+        sep: carattere o stringa di separazione (default &#39;,&#39;)
+
+    Returns:
+        stringa
+    &#34;&#34;&#34;
+    out = [ str(x) for x in lista ]
+    stringa = sep.join(out)
+    return  stringa
+
+#-----------------------------------------------------------------------
+def lista_a_stringa(lista, sep = &#39;, &#39;):
+    &#34;&#34;&#34; Rende la lista in una stringa con parentesi e virgole
+
+    Args:
+        lista : la lista da convertire
+        sep: carattere o stringa di separazione (default &#39;,&#39;)
+    Returns:
+        stringa del tipo [x1, x2, ..., xn]
+
+    &#34;&#34;&#34;
+    return &#34;[&#34; + to_stringa(lista, sep)+&#34;]&#34;
+
+
+
+############################################################################
+# def filtraDataFrame(dd1):
+#     &#34;&#34;&#34;
+#     Per filtrare il dataframe richiama la funzione da local_lib
+#
+#     :param dd1: dataframe da filtrare
+#     :param filePar:
+#     :return: dataframe filtrato
+#     &#34;&#34;&#34;
+#     import local_lib as lib
+#
+#     df = lib.filtraDatframe(dd1)
+#
+#     return df
+############################################################################
+
+#...............................................................................
+def loadDataframe(filePar):
+     &#34;&#34;&#34; Carica il dataframe ed esegue, se necessario, un preprocessing
+
+     Args:
+        filePar: file dei parametri del programma
+     Returns:
+        dataframe pandas
+     &#34;&#34;&#34;
+     _, _, nomeFile, _ , k=  leggeParametri(filePar)
+     dd = pandas.read_pickle(nomeFile)
+     #.....................
+     #df=filtraDataFrame(dd)
+     df=dd
+     #.....................
+     return df
+
+
+#...............................................................................
+def loadData(dataframe, col):
+    &#34;&#34;&#34;Carica le colonne del dataframe dalla lista col.
+
+    Il dataframe contiene un vettore per ogni riga
+    e trasforma l&#39;array di array risultante in una matrice
+
+    Args:
+        dataframe: nome del dataframe in memoria
+        col: lista di colonne da caricare
+    Returns:
+        matrice corrispondente
+    &#34;&#34;&#34;
+
+    # trasforma in matrice il primo blocco di dati,
+    # nella colonna di etichetta col[0]
+    dd = dataframe[col[0]].values
+    Nr = len(dd)
+    Nc = len(dd[0])
+    dd = np.concatenate(dd).reshape((Nr, Nc))
+
+    # trasforma in matrice gli altri blocchi e li concatena
+    for c in range(1, len(col)):
+        m = dataframe[col[c]].values
+        Nr = len(m)
+        Nc = len(m[0])
+        m = np.concatenate(m).reshape((Nr, Nc))
+
+        dd = np.concatenate((dd, m), axis=1)
+
+    return dd
+
+#-----------------------------------------------------------------------
+def normalizzaMatrice(M):
+    &#34;&#34;&#34;Normalizza la matrice dividendo per il massimo sulla riga
+
+    Normalizza la matrice dividendo per il massimo sulla riga
+    cioe&#39; per il valore della massima feature del campione consderato
+    L&#39;idea e&#39; quella di rendere i valori nei vettori di rappresentazione
+    delle sequenze indipendenti dalla lunghezza della sequenza stessa
+
+    Args:
+        M: matrice da normalizzare
+
+    Returns:
+        matrice normalizzata
+    &#34;&#34;&#34;
+    M = M.astype(np.float)
+    out = M / M.max(axis=1).reshape(len(M), 1)
+    return out
+
+#-----------------------------------------------------------------------
+def loadDataNorm(dataframe, col):
+    &#34;&#34;&#34;Carica dal dataframe la matrice dei dati e la normalizza
+        dividendo ogni riga per il massimo della riga stessa.
+
+    Args:
+        dataframe: sorgente dati
+        col: lista di colonne da caricare
+    Returns:
+        matrice normalizzata
+    &#34;&#34;&#34;
+    mm = loadData(dataframe, col)
+    # print &#34;LoadDataNorm&#34;, mm.shape
+    return normalizzaMatrice(mm)
+
+
+#...............................................................................
+def dividiDataset(dataframe, filePar):
+    &#34;&#34;&#34;Divide il &lt;dataframe&gt; in input per fare il k-fold.
+
+    Args:
+        dataframe: contiene in inCol le feature di input alla rete
+            in outCol i valori di output (o le classi)
+
+    Returns:
+        fold:  una struttura dati che contiene la lista degli
+            indici per ogni fold. Per il fold i si avra&#39;:
+
+                    fold[i][&#34;train&#34;] = &lt;lista di indici di riga relativa al
+                                train del fold i&gt;
+                    fold[i][&#34;test&#34;] = &lt;lista di indici di riga
+                                relativa al test del fold i&gt;
+
+                l&#39;uso e&#39;con
+
+                    inCol=&#34;&lt;colonna di vettori di features&gt;&#34;
+                    outCol=&#34;&lt;label o valore di output&gt;&#34;
+
+
+
+    &#34;&#34;&#34;
+
+    inCol, outCol, _, _, k =  leggeParametri(filePar)
+
+
+    # selezioni i dati X: ingresso, Y: uscita
+    #X=dataframe[inCol].values
+
+    # carico unasto la funzione loadData perche&#39; la colonna del
+    # dataframe contiene il vettore di rappresentazione per la riga
+    X=loadDataNorm(dataframe, inCol)
+    # carico direettamente la colonna di output perche&#39; contiene
+    # la classe espressa come numero naturale
+    Y=dataframe[outCol].values
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y=np.reshape(Y, [len(Y),])
+
+    # esegue la divisione per il kfold con mescolamento
+    skf = StratifiedKFold(n_splits=k, shuffle=True)
+
+    fold=[]
+    for train, test in skf.split(X, Y):
+
+        v={&#34;train&#34;: train, &#34;test&#34;: test}
+        fold.append(v)
+
+    return fold
+
+
+
+
+
+#...............................................................................
+def prepara_ambiente(filePar):
+    &#34;&#34;&#34;Prepara la esecuzione del programma
+
+    Prepara la esecuzione del programma
+    generando il dataframe con i dati di input e la lista
+    delle righe che costituiscono ogni fold.
+
+    Args:
+        filePar:
+    Returns:
+        dd: dataframe
+        fold: lista delle righe per ogni fold
+
+    &#34;&#34;&#34;
+
+
+    dd = loadDataframe(filePar)
+
+    # divide l&#39;insieme di indici nei fold
+    fold = dividiDataset(dd, filePar)
+
+
+    return dd, fold
+
+
+
+
+
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+################################################################################
+
+
+#...............................................................................
+def estraiDati(listaIndici, dataframe, etichettaInput, etichettaOutput, norma):
+    &#34;&#34;&#34;Estare i dati dal dataframe e prepara le matrici per la&#39;ddestramento
+
+    Args:
+        listaIndici: indici delle righe dei dati da estrarre
+        dataframe: nome del dataframe
+        etichettaInput: lista delle etichette delle feature da usare
+        etichettaOutput: etichetta dell output
+        norma: boolean definisce se l&#39;input deve essere normalizzato
+                    (normalizzazione sul massimo della riga)
+    Returns:
+        X e Y:  matrici di ingresso e di uscita
+    &#34;&#34;&#34;
+
+    # seleziona le righe in listaIndici e crea un altro dataframe
+    # che sara&#39; trasformato in matrice
+    Xdf=dataframe.iloc[listaIndici]
+
+    # carico unasto la funzione loadData perche&#39; la colonna del
+    # dataframe contiene il vettore di rappresentazione per la riga
+    if norma == True:
+        X=loadDataNorm(Xdf, etichettaInput)
+    else:
+        X = loadData(Xdf, etichettaInput)
+
+    Y=dataframe.ix[listaIndici, etichettaOutput].values
+
+    return X, Y
+
+
+#
+# #...............................................................................
+# def elimina_NaN(X_IN, Y_IN):
+#     &#34;&#34;&#34;
+#     Elimina i NaN dalle matrici in ingresso
+#
+#     :param X_train_IN:
+#     :param Y_train_IN:
+#
+#
+#     :return: stessa serie di matrici ma eliminando le righe che contengono NaN
+#     &#34;&#34;&#34;
+#
+#     # elimina gli elementi NaN dal training e dal test
+#     # LL[0] contiene l&#39;indice delle righe da eliminare
+#     LL = np.argwhere(np.isnan(X_IN))
+#     canc = LL[:, 0]
+#
+#     #print &#34;primo valore&#34;, X_IN[canc[0]]
+#
+#     X_ = np.delete(X_IN, canc, axis=0)
+#     Y_ = np.delete(Y_IN, canc, axis=0)
+#
+#
+#
+#
+#     #print &#34; posti dove ci snon Nan&#34;, canc
+#
+#
+#     return X_, Y_</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="local_lib.dividiDataset"><code class="name flex">
+<span>def <span class="ident">dividiDataset</span></span>(<span>dataframe, filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Divide il <dataframe> in input per fare il k-fold.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dataframe</code></strong></dt>
+<dd>contiene in inCol le feature di input alla rete
+in outCol i valori di output (o le classi)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>fold</code></strong></dt>
+<dd>una struttura dati che contiene la lista degli
+indici per ogni fold. Per il fold i si avra':<pre><code>    fold[i]["train"] = &lt;lista di indici di riga relativa al
+                train del fold i&gt;
+    fold[i]["test"] = &lt;lista di indici di riga
+                relativa al test del fold i&gt;
+
+l'uso e'con
+
+    inCol="&lt;colonna di vettori di features&gt;"
+    outCol="&lt;label o valore di output&gt;"
+</code></pre>
+</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def dividiDataset(dataframe, filePar):
+    &#34;&#34;&#34;Divide il &lt;dataframe&gt; in input per fare il k-fold.
+
+    Args:
+        dataframe: contiene in inCol le feature di input alla rete
+            in outCol i valori di output (o le classi)
+
+    Returns:
+        fold:  una struttura dati che contiene la lista degli
+            indici per ogni fold. Per il fold i si avra&#39;:
+
+                    fold[i][&#34;train&#34;] = &lt;lista di indici di riga relativa al
+                                train del fold i&gt;
+                    fold[i][&#34;test&#34;] = &lt;lista di indici di riga
+                                relativa al test del fold i&gt;
+
+                l&#39;uso e&#39;con
+
+                    inCol=&#34;&lt;colonna di vettori di features&gt;&#34;
+                    outCol=&#34;&lt;label o valore di output&gt;&#34;
+
+
+
+    &#34;&#34;&#34;
+
+    inCol, outCol, _, _, k =  leggeParametri(filePar)
+
+
+    # selezioni i dati X: ingresso, Y: uscita
+    #X=dataframe[inCol].values
+
+    # carico unasto la funzione loadData perche&#39; la colonna del
+    # dataframe contiene il vettore di rappresentazione per la riga
+    X=loadDataNorm(dataframe, inCol)
+    # carico direettamente la colonna di output perche&#39; contiene
+    # la classe espressa come numero naturale
+    Y=dataframe[outCol].values
+
+    # trasforma Y da [XXX, 1] a [XXX,] ????
+    Y=np.reshape(Y, [len(Y),])
+
+    # esegue la divisione per il kfold con mescolamento
+    skf = StratifiedKFold(n_splits=k, shuffle=True)
+
+    fold=[]
+    for train, test in skf.split(X, Y):
+
+        v={&#34;train&#34;: train, &#34;test&#34;: test}
+        fold.append(v)
+
+    return fold</code></pre>
+</details>
+</dd>
+<dt id="local_lib.estraiDati"><code class="name flex">
+<span>def <span class="ident">estraiDati</span></span>(<span>listaIndici, dataframe, etichettaInput, etichettaOutput, norma)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Estare i dati dal dataframe e prepara le matrici per la'ddestramento</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>listaIndici</code></strong></dt>
+<dd>indici delle righe dei dati da estrarre</dd>
+<dt><strong><code>dataframe</code></strong></dt>
+<dd>nome del dataframe</dd>
+<dt><strong><code>etichettaInput</code></strong></dt>
+<dd>lista delle etichette delle feature da usare</dd>
+<dt><strong><code>etichettaOutput</code></strong></dt>
+<dd>etichetta dell output</dd>
+<dt><strong><code>norma</code></strong></dt>
+<dd>boolean definisce se l'input deve essere normalizzato
+(normalizzazione sul massimo della riga)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>X e Y:
+matrici di ingresso e di uscita</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def estraiDati(listaIndici, dataframe, etichettaInput, etichettaOutput, norma):
+    &#34;&#34;&#34;Estare i dati dal dataframe e prepara le matrici per la&#39;ddestramento
+
+    Args:
+        listaIndici: indici delle righe dei dati da estrarre
+        dataframe: nome del dataframe
+        etichettaInput: lista delle etichette delle feature da usare
+        etichettaOutput: etichetta dell output
+        norma: boolean definisce se l&#39;input deve essere normalizzato
+                    (normalizzazione sul massimo della riga)
+    Returns:
+        X e Y:  matrici di ingresso e di uscita
+    &#34;&#34;&#34;
+
+    # seleziona le righe in listaIndici e crea un altro dataframe
+    # che sara&#39; trasformato in matrice
+    Xdf=dataframe.iloc[listaIndici]
+
+    # carico unasto la funzione loadData perche&#39; la colonna del
+    # dataframe contiene il vettore di rappresentazione per la riga
+    if norma == True:
+        X=loadDataNorm(Xdf, etichettaInput)
+    else:
+        X = loadData(Xdf, etichettaInput)
+
+    Y=dataframe.ix[listaIndici, etichettaOutput].values
+
+    return X, Y</code></pre>
+</details>
+</dd>
+<dt id="local_lib.leggeParametri"><code class="name flex">
+<span>def <span class="ident">leggeParametri</span></span>(<span>filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Legge il file yaml con i parametri</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>filePar</code></strong></dt>
+<dd>nome del file yaml di ingresso</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>l_input</code></strong></dt>
+<dd>Lista delle colonne del file di dati da leggere come input</dd>
+<dt><strong><code>l_output</code></strong></dt>
+<dd>Nome della colonna da usare per output</dd>
+<dt><strong><code>fileDati</code></strong></dt>
+<dd>Nome del file di dati in input (dataframe pandas pickle)</dd>
+<dt><strong><code>fileOut</code></strong></dt>
+<dd>Postfisso del nome del file output</dd>
+<dt><strong><code>K</code></strong></dt>
+<dd>parametro del k-fold (generalmente 10)</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def leggeParametri(filePar):
+    &#34;&#34;&#34;Legge il file yaml con i parametri
+
+    Args:
+        filePar: nome del file yaml di ingresso
+    Returns:
+        l_input:   Lista delle colonne del file di dati da leggere come input
+        l_output: Nome della colonna da usare per output
+        fileDati: Nome del file di dati in input (dataframe pandas pickle)
+        fileOut: Postfisso del nome del file output
+        K: parametro del k-fold (generalmente 10)
+
+    &#34;&#34;&#34;
+    # carica i valori da passare ai programmi
+    with open(filePar, &#39;r&#39;) as ymlfile:
+        cfg = yaml.load(ymlfile)
+
+    l_input = cfg[&#34;parEsp&#34;][&#34;l_input&#34;]
+    l_output = cfg[&#34;parEsp&#34;][&#34;l_output&#34;]
+
+
+    fileDati = cfg[&#34;file&#34;][&#34;inputFile&#34;]
+    fileOut = cfg[&#34;file&#34;][&#34;outputFile&#34;]
+
+    k = cfg[&#34;parEsp&#34;][&#34;k&#34;]
+
+    return l_input, l_output, fileDati, fileOut, k</code></pre>
+</details>
+</dd>
+<dt id="local_lib.lista_a_stringa"><code class="name flex">
+<span>def <span class="ident">lista_a_stringa</span></span>(<span>lista, sep=&#39;, &#39;)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Rende la lista in una stringa con parentesi e virgole</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>lista</code></strong> :&ensp;<code>la</code> <code>lista</code> <code>da</code> <code>convertire</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>sep</code></strong></dt>
+<dd>carattere o stringa di separazione (default ',')</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>stringa del tipo [x1, x2, &hellip;, xn]</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def lista_a_stringa(lista, sep = &#39;, &#39;):
+    &#34;&#34;&#34; Rende la lista in una stringa con parentesi e virgole
+
+    Args:
+        lista : la lista da convertire
+        sep: carattere o stringa di separazione (default &#39;,&#39;)
+    Returns:
+        stringa del tipo [x1, x2, ..., xn]
+
+    &#34;&#34;&#34;
+    return &#34;[&#34; + to_stringa(lista, sep)+&#34;]&#34;</code></pre>
+</details>
+</dd>
+<dt id="local_lib.loadData"><code class="name flex">
+<span>def <span class="ident">loadData</span></span>(<span>dataframe, col)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Carica le colonne del dataframe dalla lista col.</p>
+<p>Il dataframe contiene un vettore per ogni riga
+e trasforma l'array di array risultante in una matrice</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dataframe</code></strong></dt>
+<dd>nome del dataframe in memoria</dd>
+<dt><strong><code>col</code></strong></dt>
+<dd>lista di colonne da caricare</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>matrice corrispondente</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def loadData(dataframe, col):
+    &#34;&#34;&#34;Carica le colonne del dataframe dalla lista col.
+
+    Il dataframe contiene un vettore per ogni riga
+    e trasforma l&#39;array di array risultante in una matrice
+
+    Args:
+        dataframe: nome del dataframe in memoria
+        col: lista di colonne da caricare
+    Returns:
+        matrice corrispondente
+    &#34;&#34;&#34;
+
+    # trasforma in matrice il primo blocco di dati,
+    # nella colonna di etichetta col[0]
+    dd = dataframe[col[0]].values
+    Nr = len(dd)
+    Nc = len(dd[0])
+    dd = np.concatenate(dd).reshape((Nr, Nc))
+
+    # trasforma in matrice gli altri blocchi e li concatena
+    for c in range(1, len(col)):
+        m = dataframe[col[c]].values
+        Nr = len(m)
+        Nc = len(m[0])
+        m = np.concatenate(m).reshape((Nr, Nc))
+
+        dd = np.concatenate((dd, m), axis=1)
+
+    return dd</code></pre>
+</details>
+</dd>
+<dt id="local_lib.loadDataNorm"><code class="name flex">
+<span>def <span class="ident">loadDataNorm</span></span>(<span>dataframe, col)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Carica dal dataframe la matrice dei dati e la normalizza
+dividendo ogni riga per il massimo della riga stessa.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>dataframe</code></strong></dt>
+<dd>sorgente dati</dd>
+<dt><strong><code>col</code></strong></dt>
+<dd>lista di colonne da caricare</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>matrice normalizzata</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def loadDataNorm(dataframe, col):
+    &#34;&#34;&#34;Carica dal dataframe la matrice dei dati e la normalizza
+        dividendo ogni riga per il massimo della riga stessa.
+
+    Args:
+        dataframe: sorgente dati
+        col: lista di colonne da caricare
+    Returns:
+        matrice normalizzata
+    &#34;&#34;&#34;
+    mm = loadData(dataframe, col)
+    # print &#34;LoadDataNorm&#34;, mm.shape
+    return normalizzaMatrice(mm)</code></pre>
+</details>
+</dd>
+<dt id="local_lib.loadDataframe"><code class="name flex">
+<span>def <span class="ident">loadDataframe</span></span>(<span>filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Carica il dataframe ed esegue, se necessario, un preprocessing</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>filePar</code></strong></dt>
+<dd>file dei parametri del programma</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>dataframe pandas</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def loadDataframe(filePar):
+     &#34;&#34;&#34; Carica il dataframe ed esegue, se necessario, un preprocessing
+
+     Args:
+        filePar: file dei parametri del programma
+     Returns:
+        dataframe pandas
+     &#34;&#34;&#34;
+     _, _, nomeFile, _ , k=  leggeParametri(filePar)
+     dd = pandas.read_pickle(nomeFile)
+     #.....................
+     #df=filtraDataFrame(dd)
+     df=dd
+     #.....................
+     return df</code></pre>
+</details>
+</dd>
+<dt id="local_lib.nomeFileOut"><code class="name flex">
+<span>def <span class="ident">nomeFileOut</span></span>(<span>filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Genera il nome del file di output dal file di parametri</p>
+<p>Letto il nome del file dei parametri, il file di output
+si ottiene concatenando il nome del file filePar con
+quanto scritto nel file di parametri.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>filePar</code></strong></dt>
+<dd>nome del file di PARAMETRI</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>fileOut</code></strong></dt>
+<dd>nome del file di output</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def nomeFileOut(filePar):
+    &#34;&#34;&#34; Genera il nome del file di output dal file di parametri
+
+    Letto il nome del file dei parametri, il file di output
+    si ottiene concatenando il nome del file filePar con
+    quanto scritto nel file di parametri.
+
+    Args:
+        filePar: nome del file di PARAMETRI
+
+    Returns:
+        fileOut: nome del file di output
+
+    &#34;&#34;&#34;
+
+    _, _, _, fileOut, _ = leggeParametri(filePar)
+    filePar = os.path.splitext(filePar)[0]
+
+    return filePar+&#34;_&#34;+fileOut</code></pre>
+</details>
+</dd>
+<dt id="local_lib.normalizzaMatrice"><code class="name flex">
+<span>def <span class="ident">normalizzaMatrice</span></span>(<span>M)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Normalizza la matrice dividendo per il massimo sulla riga</p>
+<p>Normalizza la matrice dividendo per il massimo sulla riga
+cioe' per il valore della massima feature del campione consderato
+L'idea e' quella di rendere i valori nei vettori di rappresentazione
+delle sequenze indipendenti dalla lunghezza della sequenza stessa</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>M</code></strong></dt>
+<dd>matrice da normalizzare</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>matrice normalizzata</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def normalizzaMatrice(M):
+    &#34;&#34;&#34;Normalizza la matrice dividendo per il massimo sulla riga
+
+    Normalizza la matrice dividendo per il massimo sulla riga
+    cioe&#39; per il valore della massima feature del campione consderato
+    L&#39;idea e&#39; quella di rendere i valori nei vettori di rappresentazione
+    delle sequenze indipendenti dalla lunghezza della sequenza stessa
+
+    Args:
+        M: matrice da normalizzare
+
+    Returns:
+        matrice normalizzata
+    &#34;&#34;&#34;
+    M = M.astype(np.float)
+    out = M / M.max(axis=1).reshape(len(M), 1)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="local_lib.prepara_ambiente"><code class="name flex">
+<span>def <span class="ident">prepara_ambiente</span></span>(<span>filePar)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Prepara la esecuzione del programma</p>
+<p>Prepara la esecuzione del programma
+generando il dataframe con i dati di input e la lista
+delle righe che costituiscono ogni fold.</p>
+<h2 id="args">Args</h2>
+<p>filePar:</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>dd</code></strong></dt>
+<dd>dataframe</dd>
+<dt><strong><code>fold</code></strong></dt>
+<dd>lista delle righe per ogni fold</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def prepara_ambiente(filePar):
+    &#34;&#34;&#34;Prepara la esecuzione del programma
+
+    Prepara la esecuzione del programma
+    generando il dataframe con i dati di input e la lista
+    delle righe che costituiscono ogni fold.
+
+    Args:
+        filePar:
+    Returns:
+        dd: dataframe
+        fold: lista delle righe per ogni fold
+
+    &#34;&#34;&#34;
+
+
+    dd = loadDataframe(filePar)
+
+    # divide l&#39;insieme di indici nei fold
+    fold = dividiDataset(dd, filePar)
+
+
+    return dd, fold</code></pre>
+</details>
+</dd>
+<dt id="local_lib.to_stringa"><code class="name flex">
+<span>def <span class="ident">to_stringa</span></span>(<span>lista, sep=&#39;, &#39;)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Trasforma la lista in una stringa, separata da 'sep'</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>lista</code></strong></dt>
+<dd>la lista da convertire</dd>
+<dt><strong><code>sep</code></strong></dt>
+<dd>carattere o stringa di separazione (default ',')</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>stringa</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def to_stringa(lista, sep = &#39;, &#39;):
+    &#34;&#34;&#34;Trasforma la lista in una stringa, separata da &#39;sep&#39;
+
+    Args:
+        lista: la lista da convertire
+        sep: carattere o stringa di separazione (default &#39;,&#39;)
+
+    Returns:
+        stringa
+    &#34;&#34;&#34;
+    out = [ str(x) for x in lista ]
+    stringa = sep.join(out)
+    return  stringa</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul>
+<li><a href="#ntroduzione">ntroduzione</a></li>
+</ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="local_lib.dividiDataset" href="#local_lib.dividiDataset">dividiDataset</a></code></li>
+<li><code><a title="local_lib.estraiDati" href="#local_lib.estraiDati">estraiDati</a></code></li>
+<li><code><a title="local_lib.leggeParametri" href="#local_lib.leggeParametri">leggeParametri</a></code></li>
+<li><code><a title="local_lib.lista_a_stringa" href="#local_lib.lista_a_stringa">lista_a_stringa</a></code></li>
+<li><code><a title="local_lib.loadData" href="#local_lib.loadData">loadData</a></code></li>
+<li><code><a title="local_lib.loadDataNorm" href="#local_lib.loadDataNorm">loadDataNorm</a></code></li>
+<li><code><a title="local_lib.loadDataframe" href="#local_lib.loadDataframe">loadDataframe</a></code></li>
+<li><code><a title="local_lib.nomeFileOut" href="#local_lib.nomeFileOut">nomeFileOut</a></code></li>
+<li><code><a title="local_lib.normalizzaMatrice" href="#local_lib.normalizzaMatrice">normalizzaMatrice</a></code></li>
+<li><code><a title="local_lib.prepara_ambiente" href="#local_lib.prepara_ambiente">prepara_ambiente</a></code></li>
+<li><code><a title="local_lib.to_stringa" href="#local_lib.to_stringa">to_stringa</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

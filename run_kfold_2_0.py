@@ -3,7 +3,7 @@
 
 
 import local_lib as ll
-import vis_modello as vs
+# import vis_modello as vs
 
 import numpy as np
 import sklearn
@@ -169,7 +169,7 @@ def run_fold(df, fold, filePar, i):
 
     # legge dal file di parametri il nome del file con la rete
     with open(filePar, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile, , Loader=yaml.FullLoader)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
         # carico le classi
         l_classi = cfg["parEsp"]["l_classi"]

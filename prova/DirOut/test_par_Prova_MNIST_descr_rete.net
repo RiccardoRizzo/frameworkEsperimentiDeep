@@ -33,7 +33,7 @@ import yaml
 def Net_f(filePar):
     # legge dal file di parametri il nome del file con la rete
     with open(filePar, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
         # CARICO I PARAMETRI DELLA RETE
         input_shape = cfg["parAlg"]["input_shape"]
 

@@ -1,0 +1,7 @@
+# Ignora le directory
+
+DirOut/
+
+# ignora i file 
+
+*.h5

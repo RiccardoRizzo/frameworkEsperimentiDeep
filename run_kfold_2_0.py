@@ -69,7 +69,7 @@ def test(df, fold, filePar):
     rec=[]
 
     with open(filePar, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
         # carico le classi
         l_classi = cfg["parEsp"]["l_classi"]
@@ -169,7 +169,7 @@ def run_fold(df, fold, filePar, i):
 
     # legge dal file di parametri il nome del file con la rete
     with open(filePar, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, , Loader=yaml.FullLoader)
 
         # carico le classi
         l_classi = cfg["parEsp"]["l_classi"]

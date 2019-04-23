@@ -59,7 +59,7 @@ def leggeParametri(filePar):
     """
     # carica i valori da passare ai programmi
     with open(filePar, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
     l_input = cfg["parEsp"]["l_input"]
     l_output = cfg["parEsp"]["l_output"]

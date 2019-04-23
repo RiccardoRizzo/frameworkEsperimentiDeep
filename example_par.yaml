@@ -46,7 +46,10 @@ Alg :
 parAlg :
 
   input_shape : [784, 1]
+  output_shape : 10
 
+  #-------------------------------------------------
+  # vari parametri relativi alla architerttura della rete
   dropout : 0.5
   beta : 1e-3
 
@@ -65,7 +68,7 @@ parAlg :
 
   dl2_units_num : 10
   dl2_activation : "softmax"
-
+  #---------------------------------------------------
 
   validation_split : 0.1
   learning_rate : 0.00005

@@ -177,7 +177,7 @@ def run_fold(df, fold, filePar, i):
         # # CARICO I PARAMETRI DELLA RETE
         input_shape = cfg["parAlg"]["input_shape"]
 
-        num_output = cfg["parAlg"]["dl2_units_num"]
+        num_output = cfg["parAlg"]["output_shape"]
 
 
         validation_split = cfg["parAlg"]["validation_split"]

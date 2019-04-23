@@ -1,6 +1,7 @@
 # Ignora le directory
 
 DirOut/
+__pycache__
 
 # ignora i file 
 

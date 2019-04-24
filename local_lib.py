@@ -269,8 +269,8 @@ def dividiDataset(dataframe, filePar):
 
     # trasforma Y da [XXX, 1] a [XXX,] ????
     # Y=np.reshape(Y, [len(Y),])
-    print(type(X), type(Y), X[0], Y[0])
-    print(len(X), len(Y))
+    #print(type(X), type(Y), X[0], Y[0])
+    #print(len(X), len(Y))
     # esegue la divisione per il kfold con mescolamento
     skf = StratifiedKFold(n_splits=k, shuffle=True)
 

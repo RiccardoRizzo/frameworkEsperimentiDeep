@@ -10,7 +10,7 @@ import sklearn
 
 import yaml
 
-
+import matplotlib.pyplot as plt
 
 # import h5py
 
@@ -68,9 +68,9 @@ def test(df, fold, filePar):
         M_rec: recall media nei vari fold
     """
 
-    acc=[]
-    prec=[]
-    rec=[]
+    acc_t=[]
+    prec_t=[]
+    rec_t=[]
 
     with open(filePar, 'r') as ymlfile:
         cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
@@ -85,7 +85,7 @@ def test(df, fold, filePar):
     for i in range(len(fold)):
 
         # esegue il training della rete
-        y_pred , Y_test, y_out, runtime, rete = run_fold(df, fold, filePar, i)
+        y_pred , Y_test, y_out, runtime, rete, storia = run_fold(df, fold, filePar, i)
 
 
         # controlla le prestazioni della rete nel fold i
@@ -103,9 +103,9 @@ def test(df, fold, filePar):
 
 
         # salva le prestazioni nella lista
-        acc.append(acc_fold)
-        prec.append(prec_fold)
-        rec.append(rec_fold)
+        acc_t.append(acc_fold)
+        prec_t.append(prec_fold)
+        rec_t.append(rec_fold)
 
         # Scrive i primi dati dell'esperimento in un file
         nFOut = ll.nomeFileOut(filePar)
@@ -126,10 +126,21 @@ def test(df, fold, filePar):
             f.write("confusion"+sep + np.array2string(confusion_fold) +"\n")
             f.write("#\n#\n")
 
+        # memorizza una immagine con la storia dell'apprendimento
+        plt.plot(storia.history['acc'])
+        plt.plot(storia.history['val_acc'])
+        plt.title('Model accuracy')
+        plt.ylabel('Accuracy')
+        plt.xlabel('Epoch_' + str(i))
+        plt.legend(['Train', 'Test'], loc='upper left')
+        nFile = nFilePre + "_fold_" + str(i) + ".png"
+        plt.savefig(nFile)
+        plt.close()
+
     # calcola la media delle prestazioni
-    M_acc=np.average(acc)
-    M_prec=np.average(prec)
-    M_rec=np.average(rec)
+    M_acc=np.average(acc_t)
+    M_prec=np.average(prec_t)
+    M_rec=np.average(rec_t)
 
     nFOut = ll.nomeFileOut(filePar) + "_network_fold_" + str(fold_BEST)+ ".h5"
     nFileNet = os.path.join(nDirOut, nFOut)
@@ -231,7 +242,7 @@ def run_fold(df, fold, filePar, i):
     Y = keras.utils.to_categorical(Y, num_output)
 
 
-    model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =0)
+    history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
     # "TEMPO DI ADDESTRAMENTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     runtime = (time.time() - start_time)
 
@@ -259,4 +270,4 @@ def run_fold(df, fold, filePar, i):
     #print "Y_test", Y_test
     #print "y_out", y_out
 
-    return y_pred, Y_test, y_out, runtime, model
+    return y_pred, Y_test, y_out, runtime, model, history

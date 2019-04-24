@@ -2,12 +2,17 @@
 
 ## Richiede
 pydot : per il plot della rete neurale
+matplotlib : per avere il grafico della accuracy durante l'apprendimento
+
+## Nel modello della rete
+Usare la metrica accuracy:
+model.compile(optimizer=optim, loss='binary_crossentropy', *metrics=["accuracy"]*)
 
 # Sistema per lanciare semplici esperimenti k-fold
 
 Il sistema si aspetta un dataframe in cui sono presenti i campioni sulle righe e nelle colonne le rappresentazioni intese come vettori di features, una rappresentazione, e quindi un vettore, per ogni colonna. 
 
-Il datagrame e' quindi fatto in questo modo:
+Il dataframe e' quindi fatto in questo modo:
 
 ![immagine del dataframe](./html/dataframe.png  "dataframe")
 

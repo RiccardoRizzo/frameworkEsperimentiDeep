@@ -153,7 +153,7 @@ def test(df, fold, filePar):
     # scrive l'immagine della struttura della rete
     nFOut = ll.nomeFileOut(filePar) + "_immagine_" + str(fold_BEST) + ".png"
     nFileNet = os.path.join(nDirOut, nFOut)
-    plot_model(rete_BEST, to_file=nFileNet)
+    plot_model(rete_BEST, to_file=nFileNet, show_shapes=True, show_layer_names=True))
 
 
     return M_acc, M_prec, M_rec

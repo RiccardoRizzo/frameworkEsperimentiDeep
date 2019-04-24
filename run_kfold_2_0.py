@@ -242,7 +242,7 @@ def run_fold(df, fold, filePar, i):
     Y = keras.utils.to_categorical(Y, num_output)
 
 
-    history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
+    history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =0)
     # "TEMPO DI ADDESTRAMENTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     runtime = (time.time() - start_time)
 

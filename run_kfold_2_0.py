@@ -10,9 +10,13 @@ import sklearn
 
 import yaml
 
+
+
 # import h5py
 
 from importlib import import_module
+
+from keras.utils import plot_model 
 
 import time
 import keras
@@ -134,6 +138,11 @@ def test(df, fold, filePar):
     nFOut = ll.nomeFileOut(filePar) + "_arch_net" + str(fold_BEST)
     nFileNet = os.path.join(nDirOut, nFOut)
     #vs.main(nFileNet, rete_BEST)
+
+    # scrive l'immagine della struttura della rete
+    nFOut = ll.nomeFileOut(filePar) + "_immagine_" + str(fold_BEST) + ".png"
+    nFileNet = os.path.join(nDirOut, nFOut)
+    plot_model(rete_BEST, to_file=nFileNet)
 
 
     return M_acc, M_prec, M_rec

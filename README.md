@@ -1,5 +1,7 @@
 # frameworkEsperimentiDeep
 
+## Richiede
+pydot : per il plot della rete neurale
 
 # Sistema per lanciare semplici esperimenti k-fold
 

@@ -1,12 +1,15 @@
 # frameworkEsperimentiDeep
 
 ## Richiede
-pydot : per il plot della rete neurale
-matplotlib : per avere il grafico della accuracy durante l'apprendimento
+  * pydot : per il plot della rete neurale
+
+  * matplotlib : per avere il grafico della accuracy durante l'apprendimento
 
 ## Nel modello della rete
 Usare la metrica accuracy:
-model.compile(optimizer=optim, loss='binary_crossentropy', *metrics=["accuracy"]*)
+
+`model.compile(optimizer=optim, loss='binary_crossentropy', metrics=["accuracy"])`
+
 
 # Sistema per lanciare semplici esperimenti k-fold
 

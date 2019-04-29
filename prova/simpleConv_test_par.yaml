@@ -1,0 +1,75 @@
+#
+# IL FILE RACCOGLIE TUTTI I PARAMETRI DELL'ESPERIMENTO
+#
+# Si suppone che i dati in ingresso siano in un file in cui si trova
+# un sample per ogni riga. La prima riga contiene le intestazioni delle
+# colonne.
+#
+# La procedura e' pensata per esperimenti piccoli, in quanto tutto e' fatto
+# in memoria.
+#
+# Dopo il caricamento si suppone di avere un dataframe cosi' fatto
+#
+#               features
+#            -----------------
+#           |                 |
+#           |                 |
+# campioni  |                 |
+#           |                 |
+#           |                 |
+#           |                 |
+#           ------------------
+#
+# Delle features una o piu' sono quelle di uscita:
+#   l_input contiene le intestazioni delle colonne di ingresso
+#   l_output contiene le intestazioni delle colonne di uscita
+#
+
+
+parEsp :
+    k : 10 # 10 se si vuole eseguire il 10 fold
+
+    l_input : ["immagine"]   # lista delle colonne di input
+
+    l_output : ["classe"] # lista delle colonne di uscita
+    l_classi : ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+
+###################################################
+# nome del file con il modello della rete
+Alg :
+  path : "./"
+  file : "simpleConv"
+
+
+
+parAlg :
+
+  input_shape : [784, 1]
+  output_shape : 10
+
+  dropout : 0.5
+
+
+  kernel_num : 28
+  kernel_size : [3,3]
+
+
+  dl1_units_num : 300
+
+  dl2_units_num : 10
+
+  validation_split : 0.1
+  learning_rate : 0.00005
+  batch_size : 64
+  epochs : 2
+
+  norma : False
+
+####################################################
+
+file :
+
+  inputFile : "/home/riccardo/sw2/Stabili/lib/RetiNeurali/frmwrkSimpleExp/prova/test_dataframe.pkl" # path completo del file di input
+  outputDir : "./DirOut/" # directory di output
+  outputFile : "Prova_MNIST" # prefisso del file di output

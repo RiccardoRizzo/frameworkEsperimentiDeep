@@ -22,27 +22,8 @@ import time
 import keras
 
 import os
+import sys
 
-
-def carica_modello (filePar):
-    """
-    Restituisce il modello per creare le immagini e la descrizione della architettura
-
-    
-    """
-    # legge dal file di parametri il nome del file con la rete
-    with open(filePar, 'r') as ymlfile:
-        nomeFileNetwork = cfg["Alg"]["file"]
-
-    # IMPORTA IL MODELLO DELLA RETE ============================================
-
-    # faccio l'import dinamico della funzione che contiene la rete neurale
-    rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")
-
-    # model = NN.Net_f(filePar)
-    modello = rete_neurale(filePar)
-    ## =========================================================================
-    return modello
 
 
 #---------------------------------------------------------
@@ -56,11 +37,41 @@ def dynamic_import(abs_module_path, modulo):
     Returns:
         nome del modulo da importare
     """
+    print(abs_module_path)
     module_object = import_module(abs_module_path)
 
     out = getattr(module_object, modulo)
 
     return out
+
+
+
+
+def carica_modello (filePar):
+    """
+    Restituisce il modello per creare le immagini e la descrizione della architettura
+
+    
+    """
+    # legge dal file di parametri il nome del file con la rete
+    with open(filePar, 'r') as ymlfile:
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
+
+        nomeFileNetwork = cfg["Alg"]["file"]
+        pathCompleto = cfg["Alg"]["path"]
+
+        sys.path.append( pathCompleto)
+
+    # IMPORTA IL MODELLO DELLA RETE ============================================
+
+    # faccio l'import dinamico della funzione che contiene la rete neurale
+    # nFile = os.path.join(pathCompleto, nomeFileNetwork)
+    rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")
+
+    modello = rete_neurale(filePar)
+    ## =========================================================================
+    return modello
+
 
 
 #...............................................................................
@@ -103,18 +114,21 @@ def test(df, fold, filePar):
     acc_BEST = 0.0
     fold_BEST = -1
 
-    # salva la descrizione del modello
+    # SALVA LA DESCRIZIONE DEL MODELLO =======================================
     modello = carica_modello (filePar)
 
     # scrive l'immagine della struttura della rete
-    nFOut = ll.nomeFileOut(filePar) + "_immagine_" + str(fold_BEST) + ".png"
+    nFOut = ll.nomeFileOut(filePar) + "_immagine.png"
     nFileNet = os.path.join(nDirOut, nFOut)
     plot_model(modello, to_file=nFileNet, show_shapes=True, show_layer_names=True)
 
-
-    nFOut = ll.nomeFileOut(filePar) + "_arch_net" + str(fold_BEST)
+    # scrive la architettura
+    nFOut = ll.nomeFileOut(filePar) + "_architettura.txt"
     nFileNet = os.path.join(nDirOut, nFOut)
-    #vs.main(nFileNet, rete_BEST)
+
+    with open(nFileNet,'w') as fh:
+        # Pass the file handle in as a lambda function to make it callable
+        modello.summary(print_fn=lambda x: fh.write(x + '\n'))
 
     # INIZIA IL K-FOLD =======================================================
     for i in range(len(fold)):

@@ -84,23 +84,21 @@ def Net(input_sh,
 
     model = Sequential()
 
-    model.add(Conv2D(kernel_num, kernel_size, input_shape=input_sh))
+    model.add(Conv2D(kernel_num, kernel_size, input_shape=input_sh, name = "conv_input"))
 
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
     model.add(Flatten()) # Flattening the 2D arrays for fully connected layers
 
-    model.add(Dense(dl1_units_num, activation="relu"))
+    model.add(Dense(dl1_units_num, activation="relu", name="denso_1"))
     model.add(Dropout(dropout))
 
-    model.add(Dense(dl2_units_num,activation="softmax"))
+    model.add(Dense(dl2_units_num, activation="softmax", name="denso_output"))
 
     # optim = optimizers.Adam(lr=learning_rate)
 
-    model.compile(optimizer='adam',  loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam',  loss='categorical_crossentropy', metrics=['accuracy'])
 
     return model
 
 
-def visualizza(model, nomeFile):
-    plot_model(model, to_file=nomeFile)

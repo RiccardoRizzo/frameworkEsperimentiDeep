@@ -198,10 +198,6 @@ def test(df, fold, filePar):
     nFileNet = os.path.join(nDirOut, nFOut)
     rete_BEST.save(nFileNet)
 
-
-
-
-
     return M_acc, M_prec, M_rec
 
 
@@ -230,8 +226,6 @@ def run_fold(df, fold, filePar, i):
 
     """
 
-    import sys
-
 
     # legge dal file di parametri il nome del file con la rete
     with open(filePar, 'r') as ymlfile:
@@ -258,10 +252,6 @@ def run_fold(df, fold, filePar, i):
         nomeFileNetwork = cfg["Alg"]["file"]
 
     # IMPORTA IL MODELLO DELLA RETE ============================================
-    # importa la libreria delle reti neurali
-    # riga = "import " + nomeFileNetwork + " as NN"
-    # exec(riga)  # importa il file con la rete
-
     # faccio l'import dinamico della funzione che contiene la rete neurale
     rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")
 
@@ -278,7 +268,8 @@ def run_fold(df, fold, filePar, i):
 
     # reshape degli input usando la codifica "channels last"
     # essendo immagini grayscale l'unico canale e' alla fine
-    X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1], 1 ) )
+    X_train_rs = np.reshape(X_train, (len(X_train), input_shape[0], input_shape[1], 1 ) )
+    X_test_rs  = np.reshape(X_test,  (len(X_test),  input_shape[0], input_shape[1], 1 ) )
 
     # trasforma Y da [XXX, 1] a [XXX,] ????
     Y = np.reshape(Y_train, (len(Y_train) ,) )
@@ -288,14 +279,13 @@ def run_fold(df, fold, filePar, i):
 
     ### INIZIO ADDESTRAMENTO =================================================
     start_time = time.time()
-    history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
+    history = model.fit(X_train_rs, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
     runtime = (time.time() - start_time)
     # FINE ADDESTRAMENTO =====================================================
 
     # PREDIZIONI =============================================================
     # genera l'output del modello
-    X = np.reshape(X_test, (len(X_test), input_shape[0], input_shape[1] ) )
-    y_out = model.predict(X)
+    y_out = model.predict(X_test_rs)
 
     y_pred = [ np.argmax(x) for x in y_out ]
     y_pred = [l_classi[i] for i in y_pred]

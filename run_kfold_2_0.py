@@ -212,28 +212,23 @@ def run_fold(df, fold, filePar, i):
         nomeFileNetwork = cfg["Alg"]["file"]
 
     # importa la libreria delle reti neurali
-    riga = "import " + nomeFileNetwork + " as NN"
-    exec(riga)  # importa il file con la rete
+    #riga = "import " + nomeFileNetwork + " as NN"
+    #exec(riga)  # importa il file con la rete
 
     # faccio l'import dinamico della funzione che contiene la rete neurale
     rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")
 
+    # model = NN.Net_f(filePar)
+    model = rete_neurale(filePar)
 
+    ## PREPARA I DATI DI TRAINING
     l_features, l_output, _, _, _ =ll.leggeParametri(filePar)
 
     # seleziona i dati di ingresso e di uscita
     X_train, Y_train = ll.estraiDati(fold[i]["train"], df, l_features, l_output, norma)
     X_test, Y_test = ll.estraiDati(fold[i]["test"], df, l_features, l_output, norma)
 
-
-    # model = NN.Net_f(filePar)
-    model = rete_neurale(filePar)
-
-    ### TEMPO DI ADDESTRAMENTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    start_time = time.time()
-
-
-    # esegue il training
+    # reshape degli input
     X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1] ) )
 
     # trasforma Y da [XXX, 1] a [XXX,] ????
@@ -242,9 +237,11 @@ def run_fold(df, fold, filePar, i):
     Y = keras.utils.to_categorical(Y, num_output)
 
 
+    ### INIZIO ADDESTRAMENTO 
+    start_time = time.time()
     history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
-    # "TEMPO DI ADDESTRAMENTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
     runtime = (time.time() - start_time)
+    # FINE ADDESTRAMENTO 
 
     # PREDIZIONI =============================================================
     # genera l'output del modello

@@ -1,7 +1,10 @@
 # Ignora le directory
 
 DirOut/
-__pycache__
+__pycache__/
+
+prova/DirOut/
+prova/__pycache__/
 
 # ignora i file 
 

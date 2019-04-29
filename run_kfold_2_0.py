@@ -24,6 +24,26 @@ import keras
 import os
 
 
+def carica_modello (filePar):
+    """
+    Restituisce il modello per creare le immagini e la descrizione della architettura
+
+    
+    """
+    # legge dal file di parametri il nome del file con la rete
+    with open(filePar, 'r') as ymlfile:
+        nomeFileNetwork = cfg["Alg"]["file"]
+
+    # IMPORTA IL MODELLO DELLA RETE ============================================
+
+    # faccio l'import dinamico della funzione che contiene la rete neurale
+    rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")
+
+    # model = NN.Net_f(filePar)
+    modello = rete_neurale(filePar)
+    ## =========================================================================
+    return modello
+
 
 #---------------------------------------------------------
 def dynamic_import(abs_module_path, modulo):
@@ -82,6 +102,21 @@ def test(df, fold, filePar):
 
     acc_BEST = 0.0
     fold_BEST = -1
+
+    # salva la descrizione del modello
+    modello = carica_modello (filePar)
+
+    # scrive l'immagine della struttura della rete
+    nFOut = ll.nomeFileOut(filePar) + "_immagine_" + str(fold_BEST) + ".png"
+    nFileNet = os.path.join(nDirOut, nFOut)
+    plot_model(modello, to_file=nFileNet, show_shapes=True, show_layer_names=True)
+
+
+    nFOut = ll.nomeFileOut(filePar) + "_arch_net" + str(fold_BEST)
+    nFileNet = os.path.join(nDirOut, nFOut)
+    #vs.main(nFileNet, rete_BEST)
+
+    # INIZIA IL K-FOLD =======================================================
     for i in range(len(fold)):
 
         # esegue il training della rete
@@ -137,23 +172,20 @@ def test(df, fold, filePar):
         plt.savefig(nFile)
         plt.close()
 
+    ### FINE DEL K-FOLD ======================================================
+
     # calcola la media delle prestazioni
     M_acc=np.average(acc_t)
     M_prec=np.average(prec_t)
     M_rec=np.average(rec_t)
 
+    # salva il modello migliore
     nFOut = ll.nomeFileOut(filePar) + "_network_fold_" + str(fold_BEST)+ ".h5"
     nFileNet = os.path.join(nDirOut, nFOut)
     rete_BEST.save(nFileNet)
 
-    nFOut = ll.nomeFileOut(filePar) + "_arch_net" + str(fold_BEST)
-    nFileNet = os.path.join(nDirOut, nFOut)
-    #vs.main(nFileNet, rete_BEST)
 
-    # scrive l'immagine della struttura della rete
-    nFOut = ll.nomeFileOut(filePar) + "_immagine_" + str(fold_BEST) + ".png"
-    nFileNet = os.path.join(nDirOut, nFOut)
-    plot_model(rete_BEST, to_file=nFileNet, show_shapes=True, show_layer_names=True)
+
 
 
     return M_acc, M_prec, M_rec

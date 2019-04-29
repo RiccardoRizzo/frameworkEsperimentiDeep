@@ -212,8 +212,8 @@ def run_fold(df, fold, filePar, i):
         nomeFileNetwork = cfg["Alg"]["file"]
 
     # importa la libreria delle reti neurali
-    #riga = "import " + nomeFileNetwork + " as NN"
-    #exec(riga)  # importa il file con la rete
+    # riga = "import " + nomeFileNetwork + " as NN"
+    # exec(riga)  # importa il file con la rete
 
     # faccio l'import dinamico della funzione che contiene la rete neurale
     rete_neurale = dynamic_import(nomeFileNetwork, "Net_f")

@@ -5,7 +5,10 @@ __pycache__/
 
 prova/DirOut/
 prova/__pycache__/
+prova/.ipynb_checkpoints/
+
 
 # ignora i file 
 
 *.h5
+

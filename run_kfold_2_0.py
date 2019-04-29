@@ -211,6 +211,7 @@ def run_fold(df, fold, filePar, i):
 
         nomeFileNetwork = cfg["Alg"]["file"]
 
+    # IMPORTA IL MODELLO DELLA RETE ============================================
     # importa la libreria delle reti neurali
     # riga = "import " + nomeFileNetwork + " as NN"
     # exec(riga)  # importa il file con la rete
@@ -220,8 +221,9 @@ def run_fold(df, fold, filePar, i):
 
     # model = NN.Net_f(filePar)
     model = rete_neurale(filePar)
+    ## =========================================================================
 
-    ## PREPARA I DATI DI TRAINING
+    ## PREPARA I DATI DI TRAINING ==============================================
     l_features, l_output, _, _, _ =ll.leggeParametri(filePar)
 
     # seleziona i dati di ingresso e di uscita
@@ -236,13 +238,13 @@ def run_fold(df, fold, filePar, i):
     Y = np.reshape(Y_train, (len(Y_train) ,) )
     # trasforma il numero della classe (classeID) in categoria
     Y = keras.utils.to_categorical(Y, num_output)
+    ## =======================================================================
 
-
-    ### INIZIO ADDESTRAMENTO 
+    ### INIZIO ADDESTRAMENTO =================================================
     start_time = time.time()
     history = model.fit(X, Y, validation_split=validation_split, batch_size=batch_size, epochs=epochs, verbose =1)
     runtime = (time.time() - start_time)
-    # FINE ADDESTRAMENTO 
+    # FINE ADDESTRAMENTO =====================================================
 
     # PREDIZIONI =============================================================
     # genera l'output del modello

@@ -45,14 +45,14 @@ Alg :
 
 parAlg :
 
-  input_shape : [28,28, 1]
+  input_shape : [28, 28, 1]
   output_shape : 10
 
   dropout : 0.5
 
 
   kernel_num : 28
-  kernel_size : [3,3]
+  kernel_size : [3, 3]
 
 
   dl1_units_num : 300

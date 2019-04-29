@@ -95,7 +95,7 @@ def Net(input_sh,
 
     model.add(Dense(dl2_units_num,activation="softmax"))
 
-    optim = optimizers.Adam(lr=learning_rate)
+    # optim = optimizers.Adam(lr=learning_rate)
 
     model.compile(optimizer='adam',  loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 

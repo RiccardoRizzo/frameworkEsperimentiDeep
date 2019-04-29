@@ -171,7 +171,7 @@ def Net(input_sh,
     #..................
 
     optim = optimizers.Adam(lr=learning_rate)
-    model.compile(optimizer=optim, loss='binary_crossentropy')
+    model.compile(optimizer=optim, loss='binary_crossentropy', metrics=["accuracy"])
 
     return model
 

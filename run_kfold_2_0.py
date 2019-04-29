@@ -228,8 +228,9 @@ def run_fold(df, fold, filePar, i):
     X_train, Y_train = ll.estraiDati(fold[i]["train"], df, l_features, l_output, norma)
     X_test, Y_test = ll.estraiDati(fold[i]["test"], df, l_features, l_output, norma)
 
-    # reshape degli input
-    X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1] ) )
+    # reshape degli input usando la codifica "channels last"
+    # essendo immagini grayscale l'unico canale e' alla fine
+    X=np.reshape(X_train, (len(X_train) , input_shape[0], input_shape[1], 1 ) )
 
     # trasforma Y da [XXX, 1] a [XXX,] ????
     Y = np.reshape(Y_train, (len(Y_train) ,) )
